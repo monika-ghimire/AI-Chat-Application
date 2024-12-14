@@ -1,66 +1,59 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { URL } from 'url';
-
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './chat.css'
 
 const ChatAI = () => {
-  const [messages, setMessages] = useState([]); // Store messages in an array
   const [userInput, setUserInput] = useState('');
+  const [messages, setMessages] = useState([]); // Store messages in an array
   const [loading, setLoading] = useState(false); // Handle loading state
   const navigate = useNavigate();
 
+  // List of interesting questions with static answers
+  const questions = [
+    { question: 'What is the meaning of life?', answer: 'The meaning of life is to find your gift. The purpose of life is to give it away.' },
+    { question: 'How do I become a good programmer?', answer: 'Practice, learn from mistakes, and keep improving every day.' },
+    { question: 'What is the secret to happiness?', answer: 'Happiness is found when we focus on the present and cherish simple moments.' },
+    { question: 'What is AI?', answer: 'Artificial Intelligence (AI) refers to the simulation of human intelligence in machines.' },
+    { question: 'Why is the sky blue?', answer: 'The sky appears blue because of the scattering of sunlight by the atmosphere.' },
+  ];
+
+  // Simulated AI response with "typing..." effect
+  const simulateAIResponse = (answer) => {
+    setLoading(true);
+    setTimeout(() => {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { sender: 'ai', text: answer },
+      ]);
+      setLoading(false);
+    }, 2000); // Simulate typing delay
+  };
+
   // Function to handle the sending of messages
-  const handleSend = async () => {
+  const handleSend = () => {
     if (!userInput.trim()) return;
 
     // Add user message to the chat
     setMessages((prevMessages) => [
       ...prevMessages,
-      { sender: 'user', text: userInput }
+      { sender: 'user', text: userInput },
     ]);
 
-    // Set loading to true while waiting for AI response
-    setLoading(true);
-
-    try {
-      // Call the OpenAI API to get a response
-      const response = await axios.post(
-        'https://api.openai.com/v1/completions',
-        {
-          model: 'text-davinci-003',
-          prompt: userInput,
-          max_tokens: 150,
-          temperature: 0.7,
-        },
-        {
-          headers: {
-            'Authorization': `Bearer YOUR_API_KEY`, // Replace with your OpenAI API key
-            'Content-Type': 'application/json',
-          }
-        }
-      );
-
-      // Get the AI's response text
-      const aiResponse = response.data.choices[0].text.trim();
-
-      // Add AI response to the chat
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: 'ai', text: aiResponse }
-      ]);
-    } catch (error) {
-      console.error('Error fetching AI response:', error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { sender: 'ai', text: 'Sorry, I could not process your request at the moment.' }
-      ]);
-    } finally {
-      setLoading(false);
+    // Simulate AI response based on question
+    const question = questions.find(q => q.question.toLowerCase() === userInput.toLowerCase());
+    if (question) {
+      simulateAIResponse(question.answer);
+    } else {
+      simulateAIResponse('Sorry, I don\'t have an answer for that.');
     }
 
     // Clear the input field after sending the message
     setUserInput('');
+  };
+
+  // Function to handle question click
+  const handleQuestionClick = (question) => {
+    setUserInput(question); // Set selected question as input
   };
 
   return (
@@ -75,18 +68,49 @@ const ChatAI = () => {
         </button>
       </div>
 
+      {/* Predefined Question List */}
+      <div className="question-list">
+        {questions.map((item, index) => (
+          <div
+            key={index}
+            className="question-item cursor-pointer text-blue-500 hover:underline"
+            onClick={() => handleQuestionClick(item.question)}
+          >
+            {item.question}
+          </div>
+        ))}
+      </div>
+
+      {/* Chat Window */}
       <div className="chat-window">
         {messages.map((msg, index) => (
           <div
             key={index}
             className={`chat-message ${msg.sender === 'user' ? 'user-message' : 'ai-message'}`}
           >
-            <p>{msg.text}</p>
+            {msg.sender === 'ai' && (
+              <div className="ai-profile-pic">
+                <img src="https://placekitten.com/50/50" alt="AI Profile" className="rounded-full" />
+              </div>
+            )}
+            <div className="message-text">
+              <p>{msg.text}</p>
+            </div>
           </div>
         ))}
-        {loading && <p className="text-center">AI is typing...</p>}
+        {loading && (
+          <div className="chat-message ai-message">
+            <div className="ai-profile-pic">
+              <img src="https://placekitten.com/50/50" alt="AI Profile" className="rounded-full" />
+            </div>
+            <div className="message-text">
+              <p>AI is typing...</p>
+            </div>
+          </div>
+        )}
       </div>
 
+      {/* Input Field & Send Button */}
       <div className="chat-input">
         <input
           type="text"

@@ -1,71 +1,205 @@
+/* General chat container */
 .chat-container {
+    width: 500px;
+    margin: 30px auto;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #f8f9fa;
-    height: 100vh;
-    padding: 20px;
+    height: 650px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 1s ease-in-out;
   }
   
+  /* Chat Header with Back Button */
   .chat-header {
-    width: 100%;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .chat-window {
-    width: 80%;
-    max-height: 60vh;
-    overflow-y: auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-  }
-  
-  .chat-message {
-    margin-bottom: 15px;
-    padding: 10px;
-    border-radius: 8px;
-    max-width: 70%;
-  }
-  
-  .user-message {
-    background-color: #d1f7d1;
-    align-self: flex-start;
-  }
-  
-  .ai-message {
-    background-color: #d3d3d3;
-    align-self: flex-end;
-  }
-  
-  .chat-input {
-    width: 80%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .chat-header h2 {
+    font-size: 24px;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .chat-header button {
+    color: #007BFF;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .chat-header button:hover {
+    color: #0056b3;
+  }
+  
+  /* Question List Styles */
+  .question-list {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .question-item {
+    cursor: pointer;
+    margin-bottom: 15px;
+    color: #007BFF;
+    font-weight: 500;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+  }
+  
+  .question-item:hover {
+    color: #0056b3;
+    transform: scale(1.05);
+  }
+  
+  /* Chat Window */
+  .chat-window {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-top: 20px;
+    padding: 10px;
+    background: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Chat Messages */
+  .chat-message {
+    display: flex;
+    margin-bottom: 20px;
+    animation: slideIn 0.6s ease-out;
+  }
+  
+  .chat-message p {
+    background-color: #e0e0e0;
+    padding: 12px;
+    border-radius: 15px;
+    max-width: 70%;
+    font-size: 16px;
+    word-wrap: break-word;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    line-height: 1.5;
+  }
+  
+  /* User message styles */
+  .user-message {
+    justify-content: flex-end;
+  }
+  
+  .user-message p {
+    background-color: #007BFF;
+    color: white;
+  }
+  
+  /* AI message styles */
+  .ai-message {
+    justify-content: flex-start;
+  }
+  
+  .ai-message p {
+    background-color: #f1f1f1;
+    color: #333;
+  }
+  
+  /* User and AI Profile Picture */
+  .user-profile-pic,
+  .ai-profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Typing Animation for AI */
+  .typing-animation {
+    display: flex;
+    align-items: center;
+  }
+  
+  .typing-animation p {
+    margin: 0;
+    color: #999;
+    font-size: 16px;
+    font-style: italic;
+    animation: typing 1.5s steps(6, end) infinite;
+  }
+  
+  /* Input Field */
+  .chat-input {
+    display: flex;
+    margin-top: 10px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
   }
   
   .input-field {
     width: 80%;
-    padding: 10px;
-    border-radius: 25px;
+    padding: 12px;
+    border-radius: 15px;
     border: 1px solid #ccc;
+    margin-right: 15px;
+    font-size: 16px;
+    outline: none;
+    transition: border 0.3s ease;
+  }
+  
+  .input-field:focus {
+    border-color: #007BFF;
   }
   
   .send-button {
-    padding: 10px 20px;
-    background-color: #4caf50;
+    padding: 12px 20px;
+    background: #007BFF;
     color: white;
-    border: none;
-    border-radius: 25px;
+    border-radius: 15px;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    border: none;
+    transition: background 0.3s ease;
   }
   
   .send-button:hover {
-    background-color: #45a049;
+    background: #0056b3;
+  }
+  
+  /* Fade-In and Slide-In Animations */
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideIn {
+    0% {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes typing {
+    0% {
+      content: '';
+    }
+    50% {
+      content: '.';
+    }
+    100% {
+      content: '...';
+    }
   }
   
