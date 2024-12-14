@@ -1,6 +1,6 @@
 /* General chat container */
 .chat-container {
-    width: 500px;
+    width: 800px;
     margin: 30px auto;
     background: #f9f9f9;
     border-radius: 12px;
@@ -81,8 +81,8 @@
     background-color: #e0e0e0;
     padding: 12px;
     border-radius: 15px;
-    max-width: 70%;
-    font-size: 16px;
+    max-width: 100%;
+    font-size: 13px;
     word-wrap: break-word;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     line-height: 1.5;
